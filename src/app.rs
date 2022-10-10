@@ -1,4 +1,4 @@
-use std::sync::{Arc, RwLock, TryLockResult};
+use std::sync::{Arc, RwLock};
 use std::thread;
 use egui::{Align, Button, Color32, Layout, Vec2};
 use egui_extras::RetainedImage;
@@ -34,8 +34,7 @@ impl App {
 
         thread::spawn(move || {
             let shared_state = shared_state.clone();
-            run_server(shared_state.clone())
-                .expect("Failed to start server");
+            run_server(shared_state.clone());
         });
 
         app
@@ -54,7 +53,7 @@ impl App {
             .map_err(|_| AppError::InvalidPort)?;
 
         let mut state = self.state.write()
-            .map_err(|err| AppError::FailedServerStart)?;
+            .map_err(|_| AppError::FailedServerStart)?;
         state.host = host.clone();
         state.port = port.clone();
         state.status = AppStatus::Redirecting { host, port };
@@ -65,7 +64,7 @@ impl App {
 }
 
 impl eframe::App for App {
-    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             let styles = ui.style_mut();
             styles.visuals.widgets.noninteractive.bg_fill = Color32::from_rgb(0, 0, 0);

@@ -1,5 +1,4 @@
 use std::fmt;
-use std::fmt::{Display, Write};
 
 /// The default host to redirect to
 pub const DEFAULT_HOST: &str = "127.0.0.1";
@@ -32,7 +31,7 @@ pub enum AppStatus {
 }
 
 
-impl Display for AppStatus {
+impl fmt::Display for AppStatus {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Redirecting { host, port } => f.write_str(&format!("Redirecting ({}:{})", host, port)),
@@ -50,7 +49,7 @@ pub enum AppError {
     FailedServerStart,
 }
 
-impl Display for AppError {
+impl fmt::Display for AppError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             AppError::InvalidPort => f.write_str("Invalid port"),

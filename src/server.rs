@@ -1,21 +1,12 @@
 use std::{io, thread};
-use std::io::{Cursor, Write};
 use std::net::{TcpListener, TcpStream};
 use std::sync::{Arc, PoisonError, RwLock};
-use blaze_pk::error::TdfError;
-use blaze_pk::io::Writable;
-use blaze_pk::packet::{DecodedPacket, Packet};
-use blaze_pk::tdf::Tdf;
+use blaze_pk::{group, OpaquePacket, packet, PacketError, Packets, TdfOptional};
 use blaze_schannel::{CertStore, SchannelCred, TlsStream};
 use crate::shared::SharedState;
 
-#[derive(Debug)]
-pub enum ServerError {
-    IO(io::Error),
-}
-
 /// Starts the server
-pub fn run_server(state: Arc<RwLock<SharedState>>) -> Result<(), ServerError> {
+pub fn run_server(state: Arc<RwLock<SharedState>>) {
     // Import redirector store
     let cert_store = {
         let store_bytes = include_bytes!("redirector.pfx");
@@ -48,14 +39,13 @@ pub fn run_server(state: Arc<RwLock<SharedState>>) -> Result<(), ServerError> {
             let _ = handle_client(stream, state);
         });
     }
-    Ok(())
 }
 
 #[derive(Debug)]
 pub enum ClientError {
     LockPoison,
     IOError(io::Error),
-    PacketError
+    PacketError(PacketError)
 }
 
 impl<Guard> From<PoisonError<Guard>> for ClientError {
@@ -70,9 +60,24 @@ impl From<io::Error> for ClientError {
     }
 }
 
-impl From<TdfError> for ClientError {
-    fn from(_: TdfError) -> Self {
-        ClientError::PacketError
+impl From<PacketError> for ClientError {
+    fn from(err: PacketError) -> Self {
+        ClientError::PacketError(err)
+    }
+}
+
+packet! {
+    struct RedirectPacket {
+        ADDR: TdfOptional<AddressGroup>,
+        SECU: bool,
+        XDNS: bool,
+    }
+}
+
+group! {
+    struct AddressGroup {
+        HOST: String,
+        PORT: u16
     }
 }
 
@@ -80,27 +85,19 @@ pub fn handle_client(
     stream: &mut TlsStream<TcpStream>,
     state: Arc<RwLock<SharedState>>,
 ) -> Result<(), ClientError> {
-    let packet = DecodedPacket::read(stream)?;
-    let content = {
-        let state = state.read()?;
-        let content = vec![
-            Tdf::optional("ADDR", 0, Some(
-                Tdf::group("VALUE", vec![
-                    Tdf::str("HOST", &state.host),
-                    Tdf::num("PORT", (*&state.port) as u64),
-                ])
-            )),
-            Tdf::bool("SECU", false),
-            Tdf::bool("XDNS", false),
-        ];
-        content
+    let packet = OpaquePacket::read(stream)?;
+    let state = state.read()?;
+    let content = RedirectPacket {
+        ADDR: TdfOptional::default_some("VALUE", AddressGroup {
+            HOST: state.host.clone(),
+            PORT: state.port,
+        }),
+        SECU: false,
+        XDNS: false
     };
-    let response = Packet::response(&packet, content);
-    let out_cursor = &mut Cursor::new(Vec::new());
-    response.write(out_cursor)?;
-    let stream = stream;
-    let bytes = out_cursor.get_mut();
-    stream.write_all(bytes)?;
+
+    let response = Packets::response(&packet, content);
+    response.write(stream)?;
     stream.shutdown()?;
     Ok(())
 }
