@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-blaze-pk = "0.2.3"
-blaze-ssl = "0.1.0"
+blaze-pk = "0.2.5"
+blaze-ssl = "0.1.1"
 
 egui = "0.19.0"
 eframe = "0.19.0"
