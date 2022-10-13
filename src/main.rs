@@ -1,3 +1,4 @@
+#![windows_subsystem = "windows"]
 use egui::Vec2;
 use crate::app::App;
 
@@ -12,5 +13,4 @@ fn main() {
     native_options.initial_window_size = Some(Vec2::new(300f32, 250f32));
     eframe::run_native("Pocket Relay Client", native_options,
                        Box::new(|_| Box::new(App::new())));
-
 }

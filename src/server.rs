@@ -3,7 +3,7 @@ use std::io::{Write};
 use std::net::{TcpListener, TcpStream};
 use std::sync::{Arc, PoisonError, RwLock};
 use blaze_pk::{group, OpaquePacket, packet, PacketError, Packets, TdfOptional};
-use blaze_ssl::stream::SslStream;
+use blaze_ssl::stream::{BlazeStream, StreamMode};
 use crate::shared::SharedState;
 
 
@@ -18,7 +18,7 @@ pub fn run_server(state: Arc<RwLock<SharedState>>) {
         thread::spawn(move || {
             let stream = stream.expect("Failed to accept stream");
             let stream =
-                &mut SslStream::new(stream).expect("Failed to complete handshake");
+                &mut BlazeStream::new(stream, StreamMode::Server).expect("Failed to complete handshake");
             let _ = handle_client(stream, state);
         });
     }
@@ -65,7 +65,7 @@ group! {
 }
 
 pub fn handle_client(
-    stream: &mut SslStream<TcpStream>,
+    stream: &mut BlazeStream<TcpStream>,
     state: Arc<RwLock<SharedState>>,
 ) -> Result<(), ClientError> {
     let packet = OpaquePacket::read(stream)?;
