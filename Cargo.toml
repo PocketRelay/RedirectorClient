@@ -1,8 +1,14 @@
 [package]
-name = "gosredirector"
+name = "pocket-relay-client"
 version = "0.1.0"
 edition = "2021"
 build = "build.rs"
+description = "Pocket Relay Client Tool"
+license = "MIT"
+authors = ["Jacobtread <jacobtread@gmail.com>"]
+repository = "https://github.com/PocketRelay/Client"
+readme = "README.md"
+keywords = ["EA", "PocketRelay", "Mass Effect"]
 
 [build-dependencies]
 winres = "0.1"

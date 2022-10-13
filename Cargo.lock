@@ -934,19 +934,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "gosredirector"
-version = "0.1.0"
-dependencies = [
- "blaze-pk",
- "blaze-ssl",
- "eframe",
- "egui",
- "egui_extras",
- "image",
- "winres",
-]
-
-[[package]]
 name = "half"
 version = "1.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1567,6 +1554,19 @@ dependencies = [
  "crc32fast",
  "flate2",
  "miniz_oxide",
+]
+
+[[package]]
+name = "pocket-relay-client"
+version = "0.1.0"
+dependencies = [
+ "blaze-pk",
+ "blaze-ssl",
+ "eframe",
+ "egui",
+ "egui_extras",
+ "image",
+ "winres",
 ]
 
 [[package]]
