@@ -2,6 +2,7 @@ use std::sync::{Arc, RwLock};
 use std::thread;
 use egui::{Align, Button, Color32, Layout, Vec2};
 use egui_extras::RetainedImage;
+use crate::hosts::{add_hosts_redirect, has_host_redirect, remove_hosts_redirect};
 use crate::server::run_server;
 use crate::shared::{AppError, AppStatus, DEFAULT_HOST, DEFAULT_PORT, SharedState};
 
@@ -9,6 +10,7 @@ use crate::shared::{AppError, AppStatus, DEFAULT_HOST, DEFAULT_PORT, SharedState
 pub struct App {
     // The logo image
     logo: RetainedImage,
+    has_hosts: bool,
     host: String,
     port: String,
     state: Arc<RwLock<SharedState>>,
@@ -27,6 +29,7 @@ impl App {
 
         let app = Self {
             logo,
+            has_hosts: has_host_redirect(),
             host: String::from(DEFAULT_HOST),
             port: format!("{}", DEFAULT_PORT),
             state: shared_state.clone(),
@@ -89,9 +92,9 @@ impl eframe::App for App {
 
             ui.add_space(10f32);
 
-            let button_response = ui.add_sized(Vec2::new(width, 30f32), Button::new("Set"));
+            let set_response = ui.add_sized(Vec2::new(width, 30f32), Button::new("Set"));
 
-            if button_response.clicked() {
+            if set_response.clicked() {
                 match self.update_state() {
                     Ok(_) => {}
                     Err(err) => {
@@ -99,6 +102,21 @@ impl eframe::App for App {
                             state.status = AppStatus::Error(err);
                         }
                     }
+                }
+            }
+            ui.add_space(10f32);
+
+            if self.has_hosts {
+                let add_host_redirect = ui.add_sized(Vec2::new(width, 30f32), Button::new("Remove Host Redirect"));
+                if add_host_redirect.clicked() {
+                    remove_hosts_redirect();
+                    self.has_hosts = false;
+                }
+            } else {
+                let add_host_redirect = ui.add_sized(Vec2::new(width, 30f32), Button::new("Add Host Redirect"));
+                if add_host_redirect.clicked() {
+                    add_hosts_redirect();
+                    self.has_hosts = true;
                 }
             }
 
