@@ -12,7 +12,7 @@ pub fn has_host_redirect() -> bool {
     let contents = String::from_utf8_lossy(&contents)
         .to_string();
     let mut lines = contents.lines();
-    let line = lines.find(|line| (*line).starts_with("127.0.0.1 gosredirector.ea.com"));
+    let line = lines.find(|line| (*line).contains("127.0.0.1 gosredirector.ea.com"));
     line.is_some()
 }
 
@@ -25,7 +25,7 @@ pub fn add_hosts_redirect() {
     let contents = String::from_utf8_lossy(&contents)
         .to_string();
     let mut lines = contents.lines()
-        .filter(|line| !(*line).starts_with("127.0.0.1 gosredirector.ea.com"))
+        .filter(|line| !(*line).contains("gosredirector.ea.com"))
         .collect::<Vec<&str>>();
     lines.push("127.0.0.1 gosredirector.ea.com");
     let out = lines.join("\r\n");
@@ -43,7 +43,7 @@ pub fn remove_hosts_redirect() {
         .to_string();
     let mut lines = contents.lines();
     let out = lines
-        .filter(|line| !(*line).starts_with("127.0.0.1 gosredirector.ea.com"))
+        .filter(|line| !(*line).contains("gosredirector.ea.com"))
         .collect::<Vec<&str>>()
         .join("\r\n");
 
