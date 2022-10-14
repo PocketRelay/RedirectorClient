@@ -15,6 +15,11 @@ address and port you put into this tool will be the address and port that the Ma
 client receives. This tool relies on creating a hosts file redirect for gosredirector.ea.com
 to 127.0.0.1 and this client spawns a local server which Hijacks the redirect process.
 
+## 📌 Issues
+
+When used with the current server implementation the external address configuration value 
+will have to be correct or features like Galaxy At War, Shop Icons, Etc won't work
+
 ## ❔How
 
 This tool uses the system hosts file at `C:/Windows/System32/drivers/etc/hosts` and adds
