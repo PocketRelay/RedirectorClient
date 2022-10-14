@@ -4,6 +4,10 @@
 ![Cargo Version](https://img.shields.io/crates/v/pocket-relay-client?style=for-the-badge)
 ![Cargo Downloads](https://img.shields.io/crates/d/pocket-relay-client?style=for-the-badge)
 
+> 📌**IMPORTANT**📌 If you are having trouble launching the pre-compiled binaries in releases you 
+> may have to install the certificate used to sign the binaries you can do this by following the
+> tutorial [Here](signing/SIGNING.md) or you can compile the binaries yourself with Cargo
+
 ## ❔What
 
 This is a tool for Redirecting your local Mass Effect 3 clients to an Unofficial server. The
