@@ -4,9 +4,13 @@
 ![Cargo Version](https://img.shields.io/crates/v/pocket-relay-client?style=for-the-badge)
 ![Cargo Downloads](https://img.shields.io/crates/d/pocket-relay-client?style=for-the-badge)
 
-> 📌**IMPORTANT**📌 If you are having trouble launching the pre-compiled binaries in releases you 
-> may have to install the certificate used to sign the binaries you can do this by following the
-> tutorial [Here](signing/SIGNING.md) or you can compile the binaries yourself with Cargo
+## 📌 Issues
+
+When used with the current server implementation the external address configuration value
+will have to be correct or features like Galaxy At War, Shop Icons, Etc won't work. This is
+planned to be fixed in the next iteration of this client which will create proxies for any
+of the additional servers fixing this issue
+
 
 ## ❔What
 
@@ -14,11 +18,6 @@ This is a tool for Redirecting your local Mass Effect 3 clients to an Unofficial
 address and port you put into this tool will be the address and port that the Mass Effect 3
 client receives. This tool relies on creating a hosts file redirect for gosredirector.ea.com
 to 127.0.0.1 and this client spawns a local server which Hijacks the redirect process.
-
-## 📌 Issues
-
-When used with the current server implementation the external address configuration value 
-will have to be correct or features like Galaxy At War, Shop Icons, Etc won't work
 
 ## ❔How
 
