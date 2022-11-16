@@ -1,16 +1,16 @@
-# Pocket Relay Client
+# Pocket Relay Redirector Client
 
 ![License](https://img.shields.io/github/license/PocketRelay/Client?style=for-the-badge)
 ![Cargo Version](https://img.shields.io/crates/v/pocket-relay-client?style=for-the-badge)
 ![Cargo Downloads](https://img.shields.io/crates/d/pocket-relay-client?style=for-the-badge)
 
-## 📌 Issues
+## 📌Deprication notice
 
-When used with the current server implementation the external address configuration value
-will have to be correct or features like Galaxy At War, Shop Icons, Etc won't work. This is
-planned to be fixed in the next iteration of this client which will create proxies for any
-of the additional servers fixing this issue
-
+This redirector client is depricated because it was not feasible to use this solution.
+This has been replaced by a improved version of the old setup which handles redirection
+on the server itself but with improvements or not requiring a second host entry for
+kme.jacobtread.local. See [Client (https://github.com/PocketRelay/Client)](https://github.com/PocketRelay/Client) for the
+new version
 
 ## ❔What
 
