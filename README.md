@@ -4,9 +4,9 @@
 ![Cargo Version](https://img.shields.io/crates/v/pocket-relay-client?style=for-the-badge)
 ![Cargo Downloads](https://img.shields.io/crates/d/pocket-relay-client?style=for-the-badge)
 
-## 📌Deprication notice
+## 📌Depreciation notice
 
-This redirector client is depricated because it was not feasible to use this solution.
+This redirector client is depreciated because it was not feasible to use this solution.
 This has been replaced by a improved version of the old setup which handles redirection
 on the server itself but with improvements or not requiring a second host entry for
 kme.jacobtread.local. See [Client (https://github.com/PocketRelay/Client)](https://github.com/PocketRelay/Client) for the
